@@ -6,5 +6,11 @@ output: html_document
 
 ```{r load_packages}
 library(tidyverse)
-USArrests
+#data()
+us <- USArrests
+hitters <- read_csv("data/Hitters.csv")
+arrests <- read_csv("data/Arrests.csv")
+pizza <- read_csv("data/pizzaplace.csv")
 ```
+
+**us = US arrests, hitters = baseball data, arrests = arrests for marijuana possession, pizza = a year of sales for a pizza place.**
