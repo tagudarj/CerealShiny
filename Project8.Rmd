@@ -1,0 +1,10 @@
+---
+title: "Project 8"
+author: "brunswick-green"
+output: html_document
+---
+
+```{r load_packages}
+library(tidyverse)
+USArrests
+```
