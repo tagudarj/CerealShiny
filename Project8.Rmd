@@ -1,7 +1,7 @@
 ---
 title: "Project 8"
 author: "brunswick-green"
-output: html_document
+output: github_document
 ---
 
 ```{r load_packages}
