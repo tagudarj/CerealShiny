@@ -7,10 +7,11 @@ output: github_document
 ```{r load_packages}
 library(tidyverse)
 cereal <- read_csv("data/cereal.csv")
+iris
 ```
 
 **cereal = Nutritional and Marketing Information on US Cereals**
-[Link to Variable Description](https://vincentarelbundock.github.io/Rdatasets/doc/MASS/UScereal.html)
+[Link to Variable Description](https://www.kaggle.com/crawford/80-cereals?select=cereal.csv)
 
 ### Numerical Summaries
 

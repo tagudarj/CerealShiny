@@ -44,7 +44,7 @@ cereal <- read_csv("data/cereal.csv")
 
 **cereal = Nutritional and Marketing Information on US Cereals** [Link
 to Variable
-Description](https://vincentarelbundock.github.io/Rdatasets/doc/MASS/UScereal.html)
+Description](https://www.kaggle.com/crawford/80-cereals?select=cereal.csv)
 
 ### Numerical Summaries
 
