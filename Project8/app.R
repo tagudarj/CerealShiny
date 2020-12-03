@@ -6,39 +6,62 @@ library(ggplot2)
 # Load data ----
 cereal <- read_csv("data/cereal.csv")
 
-ui <- basicPage(
-    plotOutput("plot1",
-               click = "plot_click",
-               dblclick = "plot_dblclick",
-               hover = "plot_hover",
-               brush = "plot_brush"
-    ),
-    verbatimTextOutput("info")
-)
+#Renaming manufacturer names
+cereal1 <- cereal %>%
+    mutate(mfr = str_replace_all(mfr, c("A" = "American Home Food Products")),
+           mfr = str_replace_all(mfr, c("G" = "General Mills")),
+           mfr = str_replace_all(mfr, c("K" = "Kellogs")),
+           mfr = str_replace_all(mfr, c("N" = "Nabisco")),
+           mfr = str_replace_all(mfr, c("P" = "Post")),
+           mfr = str_replace_all(mfr, c("Q" = "Quaker Oats")),
+           mfr = str_replace_all(mfr, c("R" = "Ralston Purina")),
+           type = str_replace_all(type, c("H" = "Hot")),
+           type = str_replace_all(type, c("C" = "Cold")))
 
-server <- function(input, output) {
-    output$plot1 <- renderPlot({
-        plot(cereal$shelf, cereal$rating)
-    })
+
+
+ui <- fluidPage(    
     
-    output$info <- renderText({
-        xy_str <- function(e) {
-            if(is.null(e)) return("NULL\n")
-            paste0("x=", round(e$x, 1), " y=", round(e$y, 1), "\n")
-        }
-        xy_range_str <- function(e) {
-            if(is.null(e)) return("NULL\n")
-            paste0("xmin=", round(e$xmin, 1), " xmax=", round(e$xmax, 1), 
-                   " ymin=", round(e$ymin, 1), " ymax=", round(e$ymax, 1))
-        }
+    # Give the page a title
+    titlePanel("Cereal Data"),
+    
+    # Generate a row with a sidebar
+    sidebarLayout(      
         
-        paste0(
-            "click: ", xy_str(input$plot_click),
-            "dblclick: ", xy_str(input$plot_dblclick),
-            "hover: ", xy_str(input$plot_hover),
-            "brush: ", xy_range_str(input$plot_brush)
+        # Define the sidebar with one input
+        sidebarPanel(
+            selectInput("variable", "Variable:",
+                        c("Calories (per serving)" = "calories",
+                          "Shelf" = "shelf",
+                          "Type" = "type",
+                          "Manufacturer" = "mfr",
+                          "Protein (g)" = "protein",
+                          "Fat (g)" = "fat",
+                          "Sodium (mg)" = "sodium",
+                          "Fiber (g)" = "fiber",
+                          "Carbohydrates (g)" = "carbo",
+                          "Sugars (g)" = "sugars",
+                          "Potassium (mg)" = "potass",
+                          "Vitamins and Minerals (%)" = "vitamins",
+                          "Weight (oz per serving)" = "weight",
+                          "Cups (per serving)" = "cups",
+                          "Rating" = "rating")),
+            
+            hr(),
+            helpText("Data U.S. Cereals.")
+        ),
+        
+        # Create a spot for the table
+        mainPanel(
+            tableOutput("cerealTable")  
         )
-    })
+        
+    )
+)
+server <- function(input, output) {
+    output$cerealTable <- renderTable({
+        cereal1[, c("name", input$variable), drop = FALSE]
+    }, rownames = TRUE)
 }
 
 shinyApp(ui, server)
