@@ -23,14 +23,14 @@ cereal1 <- cereal %>%
 ui <- fluidPage(    
     
     # Give the page a title
-    titlePanel("Cereal Data"),
+    titlePanel("U.S. Cereal Data"),
     
     # Generate a row with a sidebar
     sidebarLayout(      
         
         # Define the sidebar with one input
         sidebarPanel(
-            selectInput("variable", "Variable:",
+            selectInput("variable", "Nutritional Facts:",
                         c("Calories (per serving)" = "calories",
                           "Shelf" = "shelf",
                           "Type" = "type",
@@ -48,17 +48,31 @@ ui <- fluidPage(
                           "Rating" = "rating")),
             
             hr(),
-            helpText("Data U.S. Cereals.")
+            helpText("Use the dropdown to view nutritional value on U.S. Cereals.")
         ),
         
         # Create a spot for the table
         mainPanel(
+            plotOutput("myPlot"),
             tableOutput("cerealTable")  
         )
         
     )
 )
 server <- function(input, output) {
+    myPlot = reactiveVal()
+    
+    myData = reactive({
+        input$variable
+        data = data.frame(x = 1:10, y = runif(10))
+        myPlot(ggplot(data, aes(x = mfr, y = calories)) + geom_point())
+        data
+    })
+    
+    output$myPlot = renderPlot({
+        myPlot()
+    })
+    
     output$cerealTable <- renderTable({
         cereal1[, c("name", input$variable), drop = FALSE]
     }, rownames = TRUE)
