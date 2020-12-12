@@ -26,7 +26,7 @@ ui <- fluidPage(
     # Giving the page a title
     titlePanel("R Shiny App"),
     #Giving the page a subtitle
-    strong(div(em(p("of U.S. Cereal Data")), style = "color:gray")),
+    strong(div(em(p("of U.S. Cereal Data")), style = "color:maroon")),
     
     # Generate a row with a sidebar
     sidebarLayout(      
@@ -63,7 +63,9 @@ ui <- fluidPage(
             #Help Text for shelf level
             helpText("Note: shelf level is display height ",
                      strong("(1, 2, 3)"), 
-                     "counting from the floor."),
+                     "counting from the floor. Rating goes from",
+                    strong("0 - 100"),
+                    "with 100 being the most healthy."),
             
             #Number of observations
             numericInput(inputId = "obs",
@@ -76,16 +78,16 @@ ui <- fluidPage(
             #Header for graph
             h3("Graph:"),
             #Table header subtitle
-            p("Use the dropdowns to view information on U.S. Cereals in
-                     the graph."),
-            selectInput("graph", "Frequency Value:",
-                        c("Shelf Level" = "shelf")),
+            p("Use the slider tool to increase or decrease the number of bins shown on the graph."),
             # Input: Slider for the number of bins ----
             sliderInput(inputId = "bins",
                         label = "Number of bins:",
                         min = 1,
                         max = 50,
-                        value = 30),
+                        value = 10),
+            helpText("Note:",
+                     strong("bins"),
+                     "are equally-spaced intervals that are used to sort data on graphs."),
             img(src = "cereal.png", height = 160, width = 230),
             helpText("Photo found",
               a("here.", 
@@ -97,10 +99,11 @@ ui <- fluidPage(
         # MAIN PANEL
         mainPanel(
             #Center Header
-            h1("Information from U.S. Cereal Data", align = "center"),
+            h1("U.S. Cereal:", align = "center"),
+            h3(div(em("Nutritional Facts and Advertising Strategy")), align = "center"),
             #Creators
             strong(div(em(p("GVSU STA 518 02 ~ Team brunswick-green: Ian Fetterman and Jessica Tagudar", 
-                            align = "center"))), style = "color:gray"),
+                            align = "center"))), style = "color:maroon"),
             # Kaggle Dataset Source
             p("This dataset was found on ",
               a("Kaggle.", 
@@ -108,37 +111,49 @@ ui <- fluidPage(
             #Github source
             "For our R code, visit our ",
             a("Github repository.", 
-              href = "https://github.com/STA518-02-Fall20/project08-brunswick-green.git")),
+              href = "https://github.com/STA518-02-Fall20/project08-brunswick-green")),
             # User Help Text
             strong("There are many ways that U.S. cereals are specifically advertised based on their nutritional 
             value, quality, measures per serving, and ranking."),
             br(),
             br(),
-            p("How do these factors affect the differences between different U.S. cereals? For example,
-            do the nutritional facts have an influence on the shelf level? Does the manufacturer name have
-            an influence on the rating? Do the nutritional facts (eg. sugars, calories) alter your 
-            opinion on your favorite cereal?"),
+            # Research Questions
+            p("How do these factors create differences between U.S. cereals? For example,
+            do the nutritional facts have an influence on the shelf level? How does that affect their rating? 
+            Do the nutritional facts (eg. sugars, calories) alter your opinion on your favorite cereal?"),
             em("Use the dropdowns to view explore these possibilities and 
-            view different frequencies on the graph and table. Be sure to increase or decrease the 
+            view different frequencies on the table. Be sure to adjust the 
             number of observations to expand your findings, as needed."),
             br(),
             br(),
-            textOutput("tableTitle"),
+            strong(div(p("Table on U.S. Cereals", align = "center"))),
             tableOutput("cerealTable"),  
             textOutput("textTable"),
             br(),
+            # Directing audience towards an analysis
+            p(strong("Try this:"),
+                em("Choose Sugars (g) from the Nutritional Facts drop-down, Shelf Level from the 
+                    Ranking drop-down, and change the Number of Observations to 20. What do you notice?")),
+            helpText("In this set of 20 observations, there are 6 cereals on the 2nd shelf and they all have
+            at least 9 grams of sugar. It appears that high sugar cereals are frequently 
+            displayed on the 2nd shelf, which is eye-level for many consumers. What a great adverstising strategy!",
+                     style = "color:gray"),
+            br(),
             plotOutput("cerealPlot"),
             textOutput("textGraph"),
+            br(),
+            p(strong("Making comparisons:"),
+              em("In the table above, we saw that many high-sugar cereals are seen on the 2nd shelf.
+               This graph shows the comparison between shelf level and healthy ratings. What can you conclude?")),
+            helpText("Now that we know high-sugar cereals are usually displayed at eye-level, we can also make the
+                     conclusion that those 2nd shelf cereals will typically have low and unhealthy ratings. Does this
+                     change your mind about your favorite cereal?"),
             br()
         )
         
     )
 )
 server <- function(input, output) {
-    #Text info on graph
-    output$tableTitle <- renderText({
-        paste("Table on U.S. Cereals")
-    })
     
     # Creating table
     # User can specify number of obs
@@ -157,22 +172,23 @@ server <- function(input, output) {
     # Creating bar plot
     # Need to fix input x value, and bins
     output$cerealPlot <- renderPlot({
-        x    <- cereal1$shelf
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
+        x <- cereal$shelf
+        y <- cereal1$rating
+        b <- seq(min(x), max(x), length.out = input$bins + 1)
         
         ggplot() +
-            geom_histogram(mapping = aes(x, border = "white"), fill = "orange") +
-                           labs(title = "Frequency of VARIABLE",
-                                subtitle = "in U.S.Cereals",
-                                x = "VARIABLE",
-                                y = "Frequency of VARIABLE") +
+            geom_col(mapping = aes(x, y), fill = "orange", bins = b) +
+                           labs(title = "U.S. Cereal Rating",
+                                subtitle = "by Shelf Level",
+                                x = "Shelf Level",
+                                y = "Rating") +
             theme_bw()
 
     })
 
     #Text info on graph
     output$textGraph <- renderText({
-        paste("- This graph is currently showing the frequency of VARIABLE in U.S. Cereals.")
+        paste("- This graph is shows the relationship between shelf level and rating in U.S. Cereals.")
     })
     
 }
