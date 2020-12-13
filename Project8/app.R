@@ -36,7 +36,7 @@ ui <- fluidPage(
             #Header for table
             h3("Table:"),
             #Table header subtitle
-            p("Use the dropdowns to view information on U.S. Cereals in the table."),
+            p("Use the dropdowns below to view information on U.S. Cereals in the table."),
             #Input for first column choice
             selectInput("table1", "Nutritional Facts:",
                         c("Calories (per serving)" = "calories",
