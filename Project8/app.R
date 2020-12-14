@@ -2,6 +2,7 @@
 library(shiny)
 library(tidyverse)
 library(ggplot2)
+library(rsconnect)
 
 # Load data 
 cereal <- read_csv("data/cereal.csv")
@@ -77,23 +78,15 @@ ui <- fluidPage(
             
             #Header for graph
             h3("Graph:"),
-            #Table header subtitle
-            p("Use the slider tool to increase or decrease the number of bins shown on the graph."),
-            # Input: Slider for the number of bins ----
-            sliderInput(inputId = "bins",
-                        label = "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 10),
-            helpText("Note:",
-                     strong("bins"),
-                     "are equally-spaced intervals that are used to sort data on graphs."),
-            img(src = "cereal.png", height = 160, width = 230),
+            #Graph subtitle
+            p("Analyze the graph to the bottom right to make comparisons with the U.S. Cereals Table."),
+            br(),
+            
+            # Cereal Photo
+            img(src = "cereal2.jpg", height = 180, width = 230),
             helpText("Photo found",
               a("here.", 
-                href = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.themarketingscope.com%2F
-                3-cereal-brands-that-will-never-get-stale%2F&psig=AOvVaw2vwMJpj5rAVe3KgzP9hNU5&ust=
-                1607659967608000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJj_k5zGwu0CFQAAAAAdAAAAABAN")),
+                href = "http://casualkitchen.blogspot.com/2009/04/just-say-no-to-overpriced-boxed-cereal.html")),
         ),
         
         # MAIN PANEL
@@ -118,14 +111,16 @@ ui <- fluidPage(
             br(),
             br(),
             # Research Questions
+            h5("Questions to consider:", align = "center"),
             p("How do these factors create differences between U.S. cereals? For example,
             do the nutritional facts have an influence on the shelf level? How does that affect their rating? 
             Do the nutritional facts (eg. sugars, calories) alter your opinion on your favorite cereal?"),
-            em("Use the dropdowns to view explore these possibilities and 
+            em("Use the dropdowns on the left to view explore these possibilities and 
             view different frequencies on the table. Be sure to adjust the 
             number of observations to expand your findings, as needed."),
             br(),
             br(),
+            #Table 
             strong(div(p("Table on U.S. Cereals", align = "center"))),
             tableOutput("cerealTable"),  
             textOutput("textTable"),
@@ -142,6 +137,7 @@ ui <- fluidPage(
             plotOutput("cerealPlot"),
             textOutput("textGraph"),
             br(),
+            # Graph Comparison
             p(strong("Making comparisons:"),
               em("In the table above, we saw that many high-sugar cereals are seen on the 2nd shelf.
                This graph shows the comparison between shelf level and healthy ratings. What can you conclude?")),
@@ -174,10 +170,9 @@ server <- function(input, output) {
     output$cerealPlot <- renderPlot({
         x <- cereal$shelf
         y <- cereal1$rating
-        b <- seq(min(x), max(x), length.out = input$bins + 1)
         
         ggplot() +
-            geom_col(mapping = aes(x, y), fill = "orange", bins = b) +
+            geom_col(mapping = aes(x, y), fill = "orange") +
                            labs(title = "U.S. Cereal Rating",
                                 subtitle = "by Shelf Level",
                                 x = "Shelf Level",
