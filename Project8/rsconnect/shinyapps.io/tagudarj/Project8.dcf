@@ -5,8 +5,8 @@ account: tagudarj
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3395506
-bundleId: 3983448
+bundleId: 3988547
 url: https://tagudarj.shinyapps.io/Project8/
-when: 1607876846.36338
+when: 1607975290.07944
 asMultiple: FALSE
 asStatic: FALSE

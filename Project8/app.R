@@ -183,7 +183,7 @@ server <- function(input, output) {
 
     #Text info on graph
     output$textGraph <- renderText({
-        paste("- This graph is shows the relationship between shelf level and rating in U.S. Cereals.")
+        paste("- This graph shows the relationship between shelf level and rating in U.S. Cereals.")
     })
     
 }
