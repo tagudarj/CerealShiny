@@ -79,12 +79,15 @@ ui <- fluidPage(
             #Header for graph
             h3("Graph:"),
             #Graph subtitle
-            p("Analyze the graph to the bottom right to make comparisons with the U.S. Cereals Table."),
+            p("Analyze the graph to the bottom right of this webpage to make comparisons with the 
+              U.S. Cereals Table."),
             br(),
             
             # Cereal Photo
             img(src = "cereal2.jpg", height = 180, width = 230),
-            helpText("Photo found",
+            helpText("This photo shows that the healthier cereal (Cheerios) is displayed on shelf 1 while
+                     the high-sugar cereals (Cap'n Crunch, Cocoa Puffs, Lucky Charms, etc.) are displayed
+                     on shelves 2 and 3. This photo was found",
               a("here.", 
                 href = "http://casualkitchen.blogspot.com/2009/04/just-say-no-to-overpriced-boxed-cereal.html")),
         ),
@@ -92,7 +95,7 @@ ui <- fluidPage(
         # MAIN PANEL
         mainPanel(
             #Center Header
-            h1("U.S. Cereal:", align = "center"),
+            h1("U.S. Cereal", align = "center"),
             h3(div(em("Nutritional Facts and Advertising Strategy")), align = "center"),
             #Creators
             strong(div(em(p("GVSU STA 518 02 ~ Team brunswick-green: Ian Fetterman and Jessica Tagudar", 
@@ -102,20 +105,20 @@ ui <- fluidPage(
               a("Kaggle.", 
                 href = "https://www.kaggle.com/crawford/80-cereals?select=cereal.csv"),
             #Github source
-            "For our R code, visit our ",
+            "For the R code, visit our ",
             a("Github repository.", 
               href = "https://github.com/STA518-02-Fall20/project08-brunswick-green")),
             # User Help Text
-            strong("There are many ways that U.S. cereals are specifically advertised based on their nutritional 
-            value, quality, measures per serving, and ranking."),
-            br(),
+            strong("We all have that sugary cereal that we love. Sometimes, it ends up in our carts when it was
+            never even on the grocery list. Why is this? There are many ways that U.S. cereals are specifically 
+            advertised based on their nutritional value, quality, measures per serving, and ranking."),
             br(),
             # Research Questions
             h5("Questions to consider:", align = "center"),
             p("How do these factors create differences between U.S. cereals? For example,
-            do the nutritional facts have an influence on the shelf level? How does that affect their rating? 
+            do the nutritional facts have an influence on the shelf display level? How does that affect their rating? 
             Do the nutritional facts (eg. sugars, calories) alter your opinion on your favorite cereal?"),
-            em("Use the dropdowns on the left to view explore these possibilities and 
+            em("Use the dropdowns on the left to explore these possibilities and 
             view different frequencies on the table. Be sure to adjust the 
             number of observations to expand your findings, as needed."),
             br(),
@@ -183,7 +186,7 @@ server <- function(input, output) {
 
     #Text info on graph
     output$textGraph <- renderText({
-        paste("- This graph shows the relationship between shelf level and rating in U.S. Cereals.")
+        paste("- This graph shows the relationship between shelf level and rating of the cereals.")
     })
     
 }
