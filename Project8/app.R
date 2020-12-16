@@ -1,7 +1,6 @@
 # Load packages 
 library(shiny)
 library(tidyverse)
-library(ggplot2)
 library(rsconnect)
 
 # Load data 
@@ -71,6 +70,8 @@ ui <- fluidPage(
             #Number of observations
             numericInput(inputId = "obs",
                          label = "Number of observations:",
+                         min = 1,
+                         max = 77,
                          value = 10),
             #Noting the maximum number of observations
             helpText("Note: The maximum number of observations is", 
@@ -79,8 +80,8 @@ ui <- fluidPage(
             #Header for graph
             h3("Graph:"),
             #Graph subtitle
-            p("Analyze the graph to the bottom right of this webpage to make comparisons with the 
-              U.S. Cereals Table."),
+            p("Analyze the graph to the bottom right of this webpage to make comparisons with the Table on U.S.
+              Cereals."),
             br(),
             
             # Cereal Photo
