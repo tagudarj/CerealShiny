@@ -1,4 +1,4 @@
-Project 8
+R Shiny App - U.S. Cereal Data
 ================
 
 R Shiny App can be seen in the Project8 folder. 
